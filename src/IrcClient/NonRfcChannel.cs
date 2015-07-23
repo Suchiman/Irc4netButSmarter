@@ -27,8 +27,9 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Specialized;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Meebey.SmartIrc4net
 {
@@ -38,9 +39,9 @@ namespace Meebey.SmartIrc4net
     /// <threadsafety static="true" instance="true" />
     public class NonRfcChannel : Channel
     {
-        private Hashtable _Owners = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _ChannelAdmins = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _Halfops = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+        private ConcurrentDictionary<string, NonRfcChannelUser> _Owners = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
+        private ConcurrentDictionary<string, NonRfcChannelUser> _ChannelAdmins = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
+        private ConcurrentDictionary<string, NonRfcChannelUser> _Halfops = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// 
@@ -61,9 +62,9 @@ namespace Meebey.SmartIrc4net
         /// 
         /// </summary>
         /// <value> </value>
-        public Hashtable Owners {
+        public Dictionary<string, NonRfcChannelUser> Owners {
             get {
-                return (Hashtable) _Owners.Clone();
+                return _Owners.ToDictionary(item => item.Key, item => item.Value);
             }
         }
 
@@ -71,7 +72,7 @@ namespace Meebey.SmartIrc4net
         /// 
         /// </summary>
         /// <value> </value>
-        internal Hashtable UnsafeOwners {
+        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeOwners {
             get {
                 return _Owners;
             }
@@ -81,9 +82,9 @@ namespace Meebey.SmartIrc4net
         /// 
         /// </summary>
         /// <value> </value>
-        public Hashtable ChannelAdmins {
+        public Dictionary<string, NonRfcChannelUser> ChannelAdmins {
             get {
-                return (Hashtable) _ChannelAdmins.Clone();
+                return _ChannelAdmins.ToDictionary(item => item.Key, item => item.Value);
             }
         }
 
@@ -91,7 +92,7 @@ namespace Meebey.SmartIrc4net
         /// 
         /// </summary>
         /// <value> </value>
-        internal Hashtable UnsafeChannelAdmins {
+        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeChannelAdmins {
             get {
                 return _ChannelAdmins;
             }
@@ -101,9 +102,9 @@ namespace Meebey.SmartIrc4net
         /// 
         /// </summary>
         /// <value> </value>
-        public Hashtable Halfops {
+        public Dictionary<string, NonRfcChannelUser> Halfops {
             get {
-                return (Hashtable) _Halfops.Clone();
+                return _Halfops.ToDictionary(item => item.Key, item => item.Value);
             }
         }
 
@@ -111,7 +112,7 @@ namespace Meebey.SmartIrc4net
         /// 
         /// </summary>
         /// <value> </value>
-        internal Hashtable UnsafeHalfops {
+        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeHalfops {
             get {
                 return _Halfops;
             }
