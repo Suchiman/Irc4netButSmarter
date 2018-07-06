@@ -39,7 +39,6 @@ using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Authentication;
 using System.Threading;
-using Starksoft.Net.Proxy;
 
 namespace Meebey.SmartIrc4net
 {
@@ -585,36 +584,7 @@ namespace Meebey.SmartIrc4net
                 // set timeout, after this the connection will be aborted
                 _TcpClient.ReceiveTimeout = _SocketReceiveTimeout * 1000;
                 _TcpClient.SendTimeout = _SocketSendTimeout * 1000;
-                
-                if (_ProxyType != ProxyType.None) {
-                    IProxyClient proxyClient = null;
-                    ProxyClientFactory proxyFactory = new ProxyClientFactory();
-                    // HACK: map our ProxyType to Starksoft's ProxyType
-                    Starksoft.Net.Proxy.ProxyType proxyType = 
-                        (Starksoft.Net.Proxy.ProxyType) Enum.Parse(
-                            typeof(ProxyType), _ProxyType.ToString(), true
-                        );
-                    
-                    if (_ProxyUsername == null && _ProxyPassword == null) {
-                        proxyClient = proxyFactory.CreateProxyClient(
-                            proxyType
-                        );
-                    } else {
-                        proxyClient = proxyFactory.CreateProxyClient(
-                            proxyType,
-                            _ProxyHost,
-                            _ProxyPort,
-                            _ProxyUsername,
-                            _ProxyPassword
-                        );
-                    }
-                    
-                    _TcpClient.Connect(_ProxyHost, _ProxyPort);
-                    proxyClient.TcpClient = _TcpClient;
-                    proxyClient.CreateConnection(Address, port);
-                } else {
-                    _TcpClient.Connect(Address, port);
-                }
+                _TcpClient.Connect(Address, port);
                 
                 Stream stream = _TcpClient.GetStream();
                 if (_UseSsl) {
