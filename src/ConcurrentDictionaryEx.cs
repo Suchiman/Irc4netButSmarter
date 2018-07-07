@@ -31,17 +31,6 @@ namespace Meebey.SmartIrc4net
     internal static class ConcurrentDictionaryEx
     {
         /// <summary>
-        /// Add a new item
-        /// </summary>
-        /// <typeparam name="TKey">Key type</typeparam>
-        /// <typeparam name="TValue">Value type</typeparam>
-        /// <param name="self">Dictionary to use</param>
-        /// <param name="key">New key</param>
-        /// <param name="value">New value</param>
-        /// <returns>True on success, false on failure</returns>
-        public static bool Add<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> self, TKey key, TValue value) => self.TryAdd(key, value);
-
-        /// <summary>
         /// Remove an item
         /// </summary>
         /// <typeparam name="TKey">Key type</typeparam>

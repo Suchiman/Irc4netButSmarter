@@ -1579,14 +1579,13 @@ namespace Meebey.SmartIrc4net
                                 if (cuser != null)
                                 {
                                     // update the op list
-                                    try
+                                    if (channel.UnsafeOps.TryAdd(temp, cuser))
                                     {
-                                        channel.UnsafeOps.Add(temp, cuser);
 #if LOG4NET
                                         Logger.ChannelSyncing.Debug("added op: "+temp+" to: "+ircdata.Channel);
 #endif
                                     }
-                                    catch (ArgumentException)
+                                    else
                                     {
 #if LOG4NET
                                         Logger.ChannelSyncing.Debug("duplicate op: "+temp+" in: "+ircdata.Channel+" not added");
@@ -2227,7 +2226,7 @@ namespace Meebey.SmartIrc4net
                         Ident = ircdata.Ident,
                         Host = ircdata.Host
                     };
-                    _IrcUsers.Add(who, ircuser);
+                    _IrcUsers.TryAdd(who, ircuser);
                 }
 
                 // HACK: IRCnet's anonymous channel mode feature breaks our
@@ -2538,7 +2537,7 @@ namespace Meebey.SmartIrc4net
                     // remove first to avoid duplication, Foo -> foo
                     _IrcUsers.Remove(oldnickname);
                     // add him as new entry and new nickname as key
-                    _IrcUsers.Add(newnickname, ircuser);
+                    _IrcUsers.TryAdd(newnickname, ircuser);
 #if LOG4NET
                     Logger.ChannelSyncing.Debug("updated nickname of: "+oldnickname+" to: "+newnickname);
 #endif
@@ -2549,16 +2548,16 @@ namespace Meebey.SmartIrc4net
                         ChannelUser channeluser = GetChannelUser(channelname, oldnickname);
                         // remove first to avoid duplication, Foo -> foo
                         channel.UnsafeUsers.Remove(oldnickname);
-                        channel.UnsafeUsers.Add(newnickname, channeluser);
+                        channel.UnsafeUsers.TryAdd(newnickname, channeluser);
                         if (channeluser.IsOp)
                         {
                             channel.UnsafeOps.Remove(oldnickname);
-                            channel.UnsafeOps.Add(newnickname, channeluser);
+                            channel.UnsafeOps.TryAdd(newnickname, channeluser);
                         }
                         if (channeluser.IsVoice)
                         {
                             channel.UnsafeVoices.Remove(oldnickname);
-                            channel.UnsafeVoices.Add(newnickname, channeluser);
+                            channel.UnsafeVoices.TryAdd(newnickname, channeluser);
                         }
                         if (SupportNonRfc)
                         {
@@ -2567,19 +2566,19 @@ namespace Meebey.SmartIrc4net
                             {
                                 var nchannel = (NonRfcChannel)channel;
                                 nchannel.UnsafeOwners.Remove(oldnickname);
-                                nchannel.UnsafeOwners.Add(newnickname, (NonRfcChannelUser)channeluser);
+                                nchannel.UnsafeOwners.TryAdd(newnickname, (NonRfcChannelUser)channeluser);
                             }
                             if (channeluser1.IsChannelAdmin)
                             {
                                 var nchannel = (NonRfcChannel)channel;
                                 nchannel.UnsafeChannelAdmins.Remove(oldnickname);
-                                nchannel.UnsafeChannelAdmins.Add(newnickname, (NonRfcChannelUser)channeluser);
+                                nchannel.UnsafeChannelAdmins.TryAdd(newnickname, (NonRfcChannelUser)channeluser);
                             }
                             if (channeluser1.IsHalfop)
                             {
                                 var nchannel = (NonRfcChannel)channel;
                                 nchannel.UnsafeHalfops.Remove(oldnickname);
-                                nchannel.UnsafeHalfops.Add(newnickname, (NonRfcChannelUser)channeluser);
+                                nchannel.UnsafeHalfops.TryAdd(newnickname, (NonRfcChannelUser)channeluser);
                             }
                         }
                     }
@@ -2776,7 +2775,7 @@ namespace Meebey.SmartIrc4net
                         Logger.ChannelSyncing.Debug("creating IrcUser: "+nickname+" because he doesn't exist yet");
 #endif
                         ircuser = new IrcUser(nickname, this);
-                        _IrcUsers.Add(nickname, ircuser);
+                        _IrcUsers.TryAdd(nickname, ircuser);
                     }
 
                     if (channeluser == null)
@@ -2788,17 +2787,17 @@ namespace Meebey.SmartIrc4net
                         channeluser = CreateChannelUser(channelname, ircuser);
                         Channel channel = GetChannel(channelname);
 
-                        channel.UnsafeUsers.Add(nickname, channeluser);
+                        channel.UnsafeUsers.TryAdd(nickname, channeluser);
                         if (op)
                         {
-                            channel.UnsafeOps.Add(nickname, channeluser);
+                            channel.UnsafeOps.TryAdd(nickname, channeluser);
 #if LOG4NET
                             Logger.ChannelSyncing.Debug("added op: " + nickname + " to: " + channelname);
 #endif
                         }
                         if (voice)
                         {
-                            channel.UnsafeVoices.Add(nickname, channeluser);
+                            channel.UnsafeVoices.TryAdd(nickname, channeluser);
 #if LOG4NET
                             Logger.ChannelSyncing.Debug("added voice: " + nickname + " to: " + channelname);
 #endif
@@ -2807,21 +2806,21 @@ namespace Meebey.SmartIrc4net
                         {
                             if (owner)
                             {
-                                ((NonRfcChannel)channel).UnsafeOwners.Add(nickname, (NonRfcChannelUser)channeluser);
+                                ((NonRfcChannel)channel).UnsafeOwners.TryAdd(nickname, (NonRfcChannelUser)channeluser);
 #if LOG4NET
                                 Logger.ChannelSyncing.Debug("added owner: " + nickname + " to: " + channelname);
 #endif
                             }
                             if (chanadmin)
                             {
-                                ((NonRfcChannel)channel).UnsafeChannelAdmins.Add(nickname, (NonRfcChannelUser)channeluser);
+                                ((NonRfcChannel)channel).UnsafeChannelAdmins.TryAdd(nickname, (NonRfcChannelUser)channeluser);
 #if LOG4NET
                                 Logger.ChannelSyncing.Debug("added channel admin: " + nickname + " to: " + channelname);
 #endif
                             }
                             if (halfop)
                             {
-                                ((NonRfcChannel)channel).UnsafeHalfops.Add(nickname, (NonRfcChannelUser)channeluser);
+                                ((NonRfcChannel)channel).UnsafeHalfops.TryAdd(nickname, (NonRfcChannelUser)channeluser);
 #if LOG4NET
                                 Logger.ChannelSyncing.Debug("added halfop: " + nickname + " to: " + channelname);
 #endif
