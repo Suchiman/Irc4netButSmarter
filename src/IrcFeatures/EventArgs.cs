@@ -21,117 +21,69 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 using System;
 
 namespace Meebey.SmartIrc4net
 {
- 
     /// <summary>
     /// Base DCC Event Arguments
     /// </summary>
     public class DccEventArgs : EventArgs
     {
-    
-        private DccConnection _dcc;
+        public DccConnection Dcc { get; }
 
-        public DccConnection dcc {
-            get {
-                return _dcc;
-            }
-        }
-    
         /// <summary>
         /// 
         /// </summary>
         /// <param name="dccClient"></param>
         /// <param name="stream">If there are multiple streams on a DCC (a channel DCC) this identifies the stream</param>
-        internal DccEventArgs(DccConnection dcc)
-        {
-            this._dcc = dcc;
-        }
+        internal DccEventArgs(DccConnection dcc) => Dcc = dcc;
     }
-    
+
     /// <summary>
     /// Dcc Event Args Involving Lines of Text
     /// </summary>
     public class DccChatEventArgs : DccEventArgs
     {
-        private string _Message;
-
-        public string Message {
-            get {
-                return _Message;
-            }
-        }
-        
-        private string[] _MessageArray;
-
-        public string[] MessageArray {
-            get {
-                return _MessageArray;
-            }
-        }
+        public string Message { get; }
+        public string[] MessageArray { get; }
 
         internal DccChatEventArgs(DccConnection dcc, string messageLine) : base(dcc)
         {
-            char[] whiteSpace = {' '};
-            this._Message = messageLine;
-            this._MessageArray = messageLine.Split(new char[] {' '});
-        }        
+            char[] whiteSpace = { ' ' };
+            Message = messageLine;
+            MessageArray = messageLine.Split(new char[] { ' ' });
+        }
     }
-    
+
     /// <summary>
     /// Dcc Event Args involving Packets of Bytes
     /// </summary>
     public class DccSendEventArgs : DccEventArgs
     {
-        private byte[] _Package;
-        
-        public byte[] Package {
-            get {
-                return _Package;
-            }
-        }
-        
-        private int _PackageSize;
-        
-        public int PackageSize {
-            get {
-                return _PackageSize;
-            }
-        }
-        
-        internal DccSendEventArgs(DccConnection dcc,  byte[] package, int packageSize) : base(dcc)
+        public byte[] Package { get; }
+        public int PackageSize { get; }
+
+        internal DccSendEventArgs(DccConnection dcc, byte[] package, int packageSize) : base(dcc)
         {
-            this._Package = package;
-            this._PackageSize = packageSize;
-        }        
+            Package = package;
+            PackageSize = packageSize;
+        }
     }
-    
+
     /// <summary>
     /// Special DCC Event Arg for Receiving File Requests
     /// </summary>
     public class DccSendRequestEventArgs : DccEventArgs
     {
-        private string _Filename;
-        public string Filename {
-            get {
-                return _Filename;
-            }
-        }
-        
-        private long _Filesize;
-        public long Filesize {
-            get {
-                return _Filesize;
-            }
-        }
-        
+        public string Filename { get; }
+        public long Filesize { get; }
+
         internal DccSendRequestEventArgs(DccConnection dcc, string filename, long filesize) : base(dcc)
         {
-            this._Filename = filename;
-            this._Filesize = filesize;
+            Filename = filename;
+            Filesize = filesize;
         }
     }
 }

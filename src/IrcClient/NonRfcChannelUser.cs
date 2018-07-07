@@ -37,7 +37,7 @@ namespace Meebey.SmartIrc4net
         public bool IsOwner { get; set; }
         public bool IsChannelAdmin { get; set; }
         public bool IsHalfop { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

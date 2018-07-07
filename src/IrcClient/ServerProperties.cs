@@ -43,14 +43,18 @@ namespace Meebey.SmartIrc4net
         /// Stores how the server maps between uppercase and lowercase letters.
         /// (raw property <c>CASEMAPPING</c>)
         /// </summary>
-        public CaseMappingType CaseMapping {
-            get {
-                if (!HaveNonNullKey("CASEMAPPING")) {
+        public CaseMappingType CaseMapping
+        {
+            get
+            {
+                if (!HaveNonNullKey("CASEMAPPING"))
+                {
                     // default is rfc1459
                     return CaseMappingType.Rfc1459;
                 }
 
-                switch (RawProperties ["CASEMAPPING"]) {
+                switch (RawProperties["CASEMAPPING"])
+                {
                     case "ascii":
                         return CaseMappingType.Ascii;
                     case "rfc1459":
@@ -71,11 +75,7 @@ namespace Meebey.SmartIrc4net
         /// an infinite amount.
         /// (raw property <c>CHANLIMIT</c>)
         /// </summary>
-        public IDictionary<string, int> ChannelJoinLimits {
-            get {
-                return ParseStringNumberPairs("CHANLIMIT", null, null, -1);
-            }
-        }
+        public IDictionary<string, int> ChannelJoinLimits => ParseStringNumberPairs("CHANLIMIT", null, null, -1);
 
         /// <summary>
         /// Stores the channel modes which store lists. When a
@@ -85,15 +85,7 @@ namespace Meebey.SmartIrc4net
         /// value of null means none or invalid ones were supplied.
         /// (raw property <c>CHANMODES</c>, first value)
         /// </summary>
-        public string ListChannelModes {
-            get {
-                var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
-                    return null;
-                }
-                return splitmodes [0];
-            }
-        }
+        public string ListChannelModes => SplitChannelModes?[0];
 
         /// <summary>
         /// Stores the channel modes which store a parameter. This
@@ -101,70 +93,43 @@ namespace Meebey.SmartIrc4net
         /// removing the mode.
         /// (raw property <c>CHANMODES</c>, second value)
         /// </summary>
-        public string ParametricChannelModes {
-            get {
-                var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
-                    return null;
-                }
-                return splitmodes [1];
-            }
-        }
+        public string ParametricChannelModes => SplitChannelModes?[1];
 
         /// <summary>
         /// Stores the channel modes which store a parameter. This
         /// parameter must only be provided when adding the value.
         /// (raw property <c>CHANMODES</c>, third value)
         /// </summary>
-        public string SetParametricChannelModes {
-            get {
-                var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
-                    return null;
-                }
-                return splitmodes [2];
-            }
-        }
+        public string SetParametricChannelModes => SplitChannelModes?[2];
 
         /// <summary>
         /// Stores the channel modes which don't store a parameter.
         /// (raw property <c>CHANMODES</c>, fourth value)
         /// </summary>
-        public string ParameterlessChannelModes {
-            get {
-                var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
-                    return null;
-                }
-                return splitmodes [3];
-            }
-        }
+        public string ParameterlessChannelModes => SplitChannelModes?[3];
 
         /// <summary>
         /// Stores the maximum length of a channel name. -1 means no limit.
         /// (raw property <c>CHANNELLEN</c>)
         /// </summary>
-        public int ChannelNameLength {
-            get {
-                // defaults as specified by RFC1459
-                int? len = ParseNumber("CHANNELLEN", 200, 200);
-                return len ?? -1;
-            }
-        }
+        public int ChannelNameLength => ParseNumber("CHANNELLEN", 200, 200) ?? -1; // defaults as specified by RFC1459
 
         /// <summary>
         /// Stores the types of channels supported by the server.
         /// An empty string means no channels are supported (!).
         /// (raw property <c>CHANTYPES</c>)
         /// </summary>
-        public char[] ChannelTypes {
-            get {
-                if (!HaveNonNullKey("CHANTYPES")) {
+        public char[] ChannelTypes
+        {
+            get
+            {
+                if (!HaveNonNullKey("CHANTYPES"))
+                {
                     // sane default
                     return "#&".ToCharArray();
                 }
 
-                return RawProperties ["CHANTYPES"].ToCharArray();
+                return RawProperties["CHANTYPES"].ToCharArray();
             }
         }
 
@@ -176,11 +141,7 @@ namespace Meebey.SmartIrc4net
         /// placed on NOTICE.
         /// (raw property <c>CNOTICE</c>)
         /// </summary>
-        public bool SupportsChannelParticipantNotices {
-            get {
-                return RawProperties.ContainsKey("CNOTICE");
-            }
-        }
+        public bool SupportsChannelParticipantNotices => RawProperties.ContainsKey("CNOTICE");
 
         /// <summary>
         /// Stores whether the server supports the CPRIVMSG command,
@@ -190,26 +151,27 @@ namespace Meebey.SmartIrc4net
         /// placed on PRIVMSG.
         /// (raw property <c>CPRIVMSG</c>)
         /// </summary>
-        public bool SupportsChannelParticipantPrivMsgs {
-            get {
-                return RawProperties.ContainsKey("CPRIVMSG");
-            }
-        }
+        public bool SupportsChannelParticipantPrivMsgs => RawProperties.ContainsKey("CPRIVMSG");
 
         /// <summary>
         /// Stores available extensions to the LIST command.
         /// (raw property <c>ELIST</c>)
         /// </summary>
-        public ListExtensions ListExtensions {
-            get {
-                if (!HaveNonNullKey("ELIST")) {
+        public ListExtensions ListExtensions
+        {
+            get
+            {
+                if (!HaveNonNullKey("ELIST"))
+                {
                     return ListExtensions.None;
                 }
 
-                var eliststr = RawProperties ["ELIST"];
+                string eliststr = RawProperties["ELIST"];
                 var exts = ListExtensions.None;
-                foreach (char e in eliststr.ToUpperInvariant()) {
-                    switch (e) {
+                foreach (char e in eliststr.ToUpperInvariant())
+                {
+                    switch (e)
+                    {
                         case 'C':
                             exts |= ListExtensions.CreationTime;
                             break;
@@ -238,21 +200,27 @@ namespace Meebey.SmartIrc4net
         /// does not support ban exceptions.
         /// (raw property <c>EXCEPTS</c>)
         /// </summary>
-        public char? BanExceptionCharacter {
-            get {
-                if (!RawProperties.ContainsKey("EXCEPTS")) {
+        public char? BanExceptionCharacter
+        {
+            get
+            {
+                if (!RawProperties.ContainsKey("EXCEPTS"))
+                {
                     return null;
                 }
 
-                var exstr = RawProperties ["EXCEPTS"];
-                if (exstr == null) {
+                string exstr = RawProperties["EXCEPTS"];
+                if (exstr == null)
+                {
                     // default: +e
                     return 'e';
-                } else if (exstr.Length != 1) {
+                }
+                else if (exstr.Length != 1)
+                {
                     // invalid; assume lack of support
                     return null;
                 }
-                return exstr [0];
+                return exstr[0];
             }
         }
 
@@ -262,21 +230,27 @@ namespace Meebey.SmartIrc4net
         /// does not support ban exceptions.
         /// (raw property <c>INVEX</c>)
         /// </summary>
-        public char? InviteExceptionCharacter {
-            get {
-                if (!RawProperties.ContainsKey("INVEX")) {
+        public char? InviteExceptionCharacter
+        {
+            get
+            {
+                if (!RawProperties.ContainsKey("INVEX"))
+                {
                     return null;
                 }
 
-                var exstr = RawProperties ["INVEX"];
-                if (exstr == null) {
+                string exstr = RawProperties["INVEX"];
+                if (exstr == null)
+                {
                     // default: +I
                     return 'I';
-                } else if (exstr.Length != 1) {
+                }
+                else if (exstr.Length != 1)
+                {
                     // invalid; assume lack of support
                     return null;
                 }
-                return exstr [0];
+                return exstr[0];
             }
         }
 
@@ -285,11 +259,7 @@ namespace Meebey.SmartIrc4net
         /// may be.
         /// (raw property <c>KICKLEN</c>)
         /// </summary>
-        public int? KickMessageLength {
-            get {
-                return ParseNumber("KICKLEN", null, null);
-            }
-        }
+        public int? KickMessageLength => ParseNumber("KICKLEN", null, null);
 
         /// <summary>
         /// Stores how many list channel modes (see ListChannelModes)
@@ -300,11 +270,7 @@ namespace Meebey.SmartIrc4net
         /// same total; a value of -1 means an infinite amount.
         /// (raw property <c>MAXLIST</c>)
         /// </summary>
-        public IDictionary<string, int> ListModeLimits {
-            get {
-                return ParseStringNumberPairs("MAXLIST", null, null, -1);
-            }
-        }
+        public IDictionary<string, int> ListModeLimits => ParseStringNumberPairs("MAXLIST", null, null, -1);
 
         /// <summary>
         /// Stores how many non-parameterless (list, parametric or
@@ -314,12 +280,9 @@ namespace Meebey.SmartIrc4net
         /// unlimited number of simultaneous mode sets.
         /// (raw property <c>MODES</c>)
         /// </summary>
-        public int? MaxParametricModeSets {
-            get {
+        public int? MaxParametricModeSets =>
                 // 3 if not set, infinity if value-less
-                return ParseNumber("MODES", 3, -1);
-            }
-        }
+                ParseNumber("MODES", 3, -1);
 
         /// <summary>
         /// Stores the display name of the network the IRC
@@ -327,14 +290,7 @@ namespace Meebey.SmartIrc4net
         /// means the server is not participating in an IRC network.
         /// (raw property <c>NETWORK</c>)
         /// </summary>
-        public string NetworkName {
-            get {
-                if (!HaveNonNullKey("NETWORK")) {
-                    return null;
-                }
-                return RawProperties ["NETWORK"];
-            }
-        }
+        public string NetworkName => !HaveNonNullKey("NETWORK") ? null : RawProperties["NETWORK"];
 
         /// <summary>
         /// Stores the maximum length of the nickname the client
@@ -343,12 +299,7 @@ namespace Meebey.SmartIrc4net
         /// invalid value was specified.
         /// (raw property <c>NICKLEN</c>)
         /// </summary>
-        public int? MaxNicknameLength {
-            get {
-                // RFC1459 default if unset
-                return ParseNumber("NICKLEN", 9, null);
-            }
-        }
+        public int? MaxNicknameLength => ParseNumber("NICKLEN", 9, null); // RFC1459 default if unset
 
         /// <summary>
         /// Stores the channel privilege modes (e.g. o for op, v for
@@ -357,40 +308,48 @@ namespace Meebey.SmartIrc4net
         /// null means no or an invalid value was specified.
         /// (raw property <c>PREFIX</c>)
         /// </summary>
-        public IList<KeyValuePair<char, char>> ChannelPrivilegeModesPrefixes {
-            get {
+        public IList<KeyValuePair<char, char>> ChannelPrivilegeModesPrefixes
+        {
+            get
+            {
                 var modesList = new List<KeyValuePair<char, char>>();
 
-                if (!RawProperties.ContainsKey("PREFIX")) {
+                if (!RawProperties.ContainsKey("PREFIX"))
+                {
                     // assume voice and ops
                     modesList.Add(new KeyValuePair<char, char>('o', '@'));
                     modesList.Add(new KeyValuePair<char, char>('v', '+'));
                     return modesList;
                 }
-                var prefixstr = RawProperties ["PREFIX"];
-                if (prefixstr == null) {
+                string prefixstr = RawProperties["PREFIX"];
+                if (prefixstr == null)
+                {
                     // supports no modes (!)
                     return modesList;
                 }
 
                 // format: (modes)prefixes
-                if (prefixstr [0] != '(') {
+                if (prefixstr[0] != '(')
+                {
                     return null;
                 }
 
-                var modesPrefixes = prefixstr.Substring(1).Split(')');
-                if (modesPrefixes.Length != 2) {
+                string[] modesPrefixes = prefixstr.Substring(1).Split(')');
+                if (modesPrefixes.Length != 2)
+                {
                     // assuming the pathological case of a ')' mode
                     // character is impossible, this is invalid
                     return null;
                 }
-                var modes = modesPrefixes[0];
-                var prefixes = modesPrefixes[1];
-                if (modes.Length != prefixes.Length) {
+                string modes = modesPrefixes[0];
+                string prefixes = modesPrefixes[1];
+                if (modes.Length != prefixes.Length)
+                {
                     return null;
                 }
-                for (int i = 0; i < modes.Length; ++i) {
-                    modesList.Add(new KeyValuePair<char, char>(modes [i], prefixes [i]));
+                for (int i = 0; i < modes.Length; ++i)
+                {
+                    modesList.Add(new KeyValuePair<char, char>(modes[i], prefixes[i]));
                 }
 
                 return modesList;
@@ -403,11 +362,7 @@ namespace Meebey.SmartIrc4net
         /// of traffic generated by LIST.
         /// (raw property <c>SAFELIST</c>)
         /// </summary>
-        public bool ListIsSafe {
-            get {
-                return RawProperties.ContainsKey("SAFELIST");
-            }
-        }
+        public bool ListIsSafe => RawProperties.ContainsKey("SAFELIST");
 
         /// <summary>
         /// Stores the maximum number of entries on a user's silence
@@ -415,12 +370,7 @@ namespace Meebey.SmartIrc4net
         /// on this server.
         /// (raw property <c>SILENCE</c>)
         /// </summary>
-        public int MaxSilenceListEntries {
-            get {
-                // SILENCE requires a value, but assume 0 if unspecified
-                return ParseNumber("SILENCE", 0, 0) ?? 0;
-            }
-        }
+        public int MaxSilenceListEntries => ParseNumber("SILENCE", 0, 0) ?? 0; // SILENCE requires a value, but assume 0 if unspecified
 
         /// <summary>
         /// If this property is not set to an empty string, users may
@@ -431,14 +381,17 @@ namespace Meebey.SmartIrc4net
         /// "~&@" for "owners, admins and operators only".
         /// (raw property <c>STATUSMSG</c>)
         /// </summary>
-        public string StatusNoticeParticipants {
-            get {
-                if (!HaveNonNullKey("STATUSMSG")) {
+        public string StatusNoticeParticipants
+        {
+            get
+            {
+                if (!HaveNonNullKey("STATUSMSG"))
+                {
                     // STATUSMSG requires a value, but assume none
                     // if unspecified
                     return "";
                 }
-                return RawProperties ["STATUSMSG"];
+                return RawProperties["STATUSMSG"];
             }
         }
 
@@ -449,12 +402,7 @@ namespace Meebey.SmartIrc4net
         /// An entry value of -1 means infinity.
         /// (raw property <c>TARGMAX</c>)
         /// </summary>
-        public IDictionary<string, int> MaxCommandTargets {
-            get {
-                var emptydict = new Dictionary<string, int>();
-                return ParseStringNumberPairs("TARGMAX", emptydict, null, -1);
-            }
-        }
+        public IDictionary<string, int> MaxCommandTargets => ParseStringNumberPairs("TARGMAX", new Dictionary<string, int>(), null, -1);
 
         /// <summary>
         /// Stores the maximum topic length that the client may set
@@ -462,13 +410,7 @@ namespace Meebey.SmartIrc4net
         /// infinite length.
         /// (raw property <c>TOPICLEN</c>)
         /// </summary>
-        public int MaxTopicLength {
-            get {
-                // SILENCE requires a value, but assume infinity
-                // if unspecified or invalid
-                return ParseNumber("TOPICLEN", -1, -1) ?? -1;
-            }
-        }
+        public int MaxTopicLength => ParseNumber("TOPICLEN", -1, -1) ?? -1; // SILENCE requires a value, but assume infinity if unspecified or invalid
 
         /// <summary>
         /// Stores the maximum number of entries on a user's watch
@@ -476,39 +418,38 @@ namespace Meebey.SmartIrc4net
         /// on this server.
         /// (raw property <c>WATCH</c>)
         /// </summary>
-        public int MaxWatchListEntries {
-            get {
-                // SILENCE requires a value, but assume 0 if unspecified
-                return ParseNumber("WATCH", 0, 0) ?? 0;
-            }
-        }
+        public int MaxWatchListEntries => ParseNumber("WATCH", 0, 0) ?? 0; // SILENCE requires a value, but assume 0 if unspecified
 
         /// <summary>
         /// Constructs an empty server properties object.
         /// </summary>
-        internal ServerProperties()
-        {
-            RawProperties = new Dictionary<string, string>();
-        }
+        internal ServerProperties() => RawProperties = new Dictionary<string, string>();
 
         internal void ParseFromRawMessage(string[] rawMessage)
         {
             // split the message (0 = server, 1 = code, 2 = my nick)
-            for (int i = 3; i < rawMessage.Length; ++i) {
-                var msg = rawMessage [i];
-                if (msg.StartsWith(":")) {
+            for (int i = 3; i < rawMessage.Length; ++i)
+            {
+                string msg = rawMessage[i];
+                if (msg.StartsWith(":"))
+                {
                     // addendum; we're done
                     break;
                 }
 
-                var keyval = msg.Split('=');
-                if (keyval.Length == 1) {
+                string[] keyval = msg.Split('=');
+                if (keyval.Length == 1)
+                {
                     // keyword only
-                    RawProperties [keyval [0]] = null;
-                } else if (keyval.Length == 2) {
+                    RawProperties[keyval[0]] = null;
+                }
+                else if (keyval.Length == 2)
+                {
                     // key and value
-                    RawProperties [keyval [0]] = keyval [1];
-                } else {
+                    RawProperties[keyval[0]] = keyval[1];
+                }
+                else
+                {
 #if LOG4NET
                     Logger.Connection.Warn("confusing ISUPPORT message, ignoring: " + msg);
 #endif
@@ -523,13 +464,7 @@ namespace Meebey.SmartIrc4net
         /// <param name="key">The key to check.</param>
         /// <returns>Whether the given key maps to a non-null value in the
         /// dictionary.</returns>
-        bool HaveNonNullKey(string key)
-        {
-            if (!RawProperties.ContainsKey(key)) {
-                return false;
-            }
-            return RawProperties [key] != null;
-        }
+        private bool HaveNonNullKey(string key) => RawProperties.TryGetValue(key, out string value) && value != null;
 
         /// <summary>
         /// Returns a dictionary from parsing a value in the format
@@ -539,40 +474,48 @@ namespace Meebey.SmartIrc4net
         /// defaultValue is used if no number is specified after a colon; if
         /// defaultValue is null, this method returns null.
         /// </summary>
-        IDictionary<string, int> ParseStringNumberPairs(string key, IDictionary<string, int> unsetDefault, IDictionary<string, int> emptyDefault, int? defaultValue)
+        private IDictionary<string, int> ParseStringNumberPairs(string key, IDictionary<string, int> unsetDefault, IDictionary<string, int> emptyDefault, int? defaultValue)
         {
-            if (!RawProperties.ContainsKey(key)) {
+            if (!RawProperties.ContainsKey(key))
+            {
                 return unsetDefault;
             }
 
-            var valstr = RawProperties [key];
-            if (valstr == null) {
+            string valstr = RawProperties[key];
+            if (valstr == null)
+            {
                 return emptyDefault;
             }
 
             var valmap = new Dictionary<string, int>();
             // comma splits the specs
-            foreach (string limit in valstr.Split(',')) {
+            foreach (string limit in valstr.Split(','))
+            {
                 // colon splits keys and value
-                var split = limit.Split(':');
-                if (split.Length != 2) {
+                string[] split = limit.Split(':');
+                if (split.Length != 2)
+                {
                     // invalid spec; don't trust the whole thing
                     return null;
                 }
-                var chantypes = split [0];
-                var valuestr = split [1];
+                string chantypes = split[0];
+                string valuestr = split[1];
                 int value;
-                if (valuestr == string.Empty) {
-                    if (defaultValue.HasValue) {
+                if (valuestr == "")
+                {
+                    if (defaultValue.HasValue)
+                    {
                         value = defaultValue.Value;
                     }
                     return null;
-                } else if (!int.TryParse(valuestr, out value)) {
+                }
+                else if (!Int32.TryParse(valuestr, out value))
+                {
                     // invalid integer; don't trust the whole thing
                     return null;
                 }
 
-                valmap [chantypes] = value;
+                valmap[chantypes] = value;
             }
 
             return valmap;
@@ -584,36 +527,34 @@ namespace Meebey.SmartIrc4net
         /// (i.e. maps to null), returns emptyDefault. On parse failure, returns
         /// null. Otherwise, returns the parsed value.
         /// </summary>
-        int? ParseNumber(string key, int? unsetDefault, int? emptyDefault)
+        private int? ParseNumber(string key, int? unsetDefault, int? emptyDefault)
         {
-            if (!RawProperties.ContainsKey(key)) {
+            if (!RawProperties.ContainsKey(key))
+            {
                 return unsetDefault;
             }
-            var numstr = RawProperties [key];
-            if (numstr == null) {
+            string numstr = RawProperties[key];
+            if (numstr == null)
+            {
                 return emptyDefault;
             }
-            int num;
-            if (!int.TryParse(numstr, out num)) {
-                return null;
-            }
-            return num;
+            return !Int32.TryParse(numstr, out int num) ? null : (int?)num;
         }
 
         /// <summary>
         /// Returns the array value of the CHANMODES property, or null if
         /// it was invalid.
         /// </summary>
-        string[] SplitChannelModes {
-            get {
-                if (!HaveNonNullKey("CHANMODES")) {
+        private string[] SplitChannelModes
+        {
+            get
+            {
+                if (!HaveNonNullKey("CHANMODES"))
+                {
                     return null;
                 }
-                var splits = RawProperties ["CHANMODES"].Split(',');
-                if (splits.Length != 4) {
-                    return null;
-                }
-                return splits;
+                string[] splits = RawProperties["CHANMODES"].Split(',');
+                return splits.Length != 4 ? null : splits;
             }
         }
     }

@@ -33,20 +33,8 @@ using System.Linq;
 
 namespace Meebey.SmartIrc4net
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <threadsafety static="true" instance="true" />
     public class NonRfcChannel : Channel
     {
-        private ConcurrentDictionary<string, NonRfcChannelUser> _Owners = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
-        private ConcurrentDictionary<string, NonRfcChannelUser> _ChannelAdmins = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
-        private ConcurrentDictionary<string, NonRfcChannelUser> _Halfops = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"> </param>
         internal NonRfcChannel(string name) : base(name)
         {
         }
@@ -58,64 +46,13 @@ namespace Meebey.SmartIrc4net
         }
 #endif
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Dictionary<string, NonRfcChannelUser> Owners {
-            get {
-                return _Owners.ToDictionary(item => item.Key, item => item.Value);
-            }
-        }
+        public Dictionary<string, NonRfcChannelUser> Owners => UnsafeOwners.ToDictionary(item => item.Key, item => item.Value);
+        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeOwners { get; } = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeOwners {
-            get {
-                return _Owners;
-            }
-        }
+        public Dictionary<string, NonRfcChannelUser> ChannelAdmins => UnsafeChannelAdmins.ToDictionary(item => item.Key, item => item.Value);
+        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeChannelAdmins { get; } = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Dictionary<string, NonRfcChannelUser> ChannelAdmins {
-            get {
-                return _ChannelAdmins.ToDictionary(item => item.Key, item => item.Value);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeChannelAdmins {
-            get {
-                return _ChannelAdmins;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Dictionary<string, NonRfcChannelUser> Halfops {
-            get {
-                return _Halfops.ToDictionary(item => item.Key, item => item.Value);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeHalfops {
-            get {
-                return _Halfops;
-            }
-        }
+        public Dictionary<string, NonRfcChannelUser> Halfops => UnsafeHalfops.ToDictionary(item => item.Key, item => item.Value);
+        internal ConcurrentDictionary<string, NonRfcChannelUser> UnsafeHalfops { get; } = new ConcurrentDictionary<string, NonRfcChannelUser>(StringComparer.OrdinalIgnoreCase);
     }
 }

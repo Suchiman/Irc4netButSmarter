@@ -1,4 +1,4 @@
-﻿/*
+/*
  * SmartIrc4net - the IRC library for .NET/C# <http://smartirc4net.sf.net>
  *
  * Copyright (c) 2015 Katy Coe <djkaty@start.no> <http://www.djkaty.com>
@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Meebey.SmartIrc4net
 {
@@ -39,10 +39,7 @@ namespace Meebey.SmartIrc4net
         /// <param name="key">New key</param>
         /// <param name="value">New value</param>
         /// <returns>True on success, false on failure</returns>
-        public static bool Add<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> self, TKey key, TValue value)
-        {
-            return self.TryAdd(key, value);
-        }
+        public static bool Add<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> self, TKey key, TValue value) => self.TryAdd(key, value);
 
         /// <summary>
         /// Remove an item
@@ -52,9 +49,6 @@ namespace Meebey.SmartIrc4net
         /// <param name="self">Dictionary to use</param>
         /// <param name="key">Key of item to remove</param>
         /// <returns>True on success, false on failure</returns>
-        public static bool Remove<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> self, TKey key)
-        {
-            return ((IDictionary<TKey, TValue>) self).Remove(key);
-        }
+        public static bool Remove<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> self, TKey key) => ((IDictionary<TKey, TValue>)self).Remove(key);
     }
 }

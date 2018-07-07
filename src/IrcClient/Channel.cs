@@ -27,43 +27,20 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Meebey.SmartIrc4net
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <threadsafety static="true" instance="true" />
     public class Channel
     {
-        private string           _Name;
-        private string           _Key       = String.Empty;
-        private ConcurrentDictionary<string, ChannelUser> _Users = new ConcurrentDictionary<string, ChannelUser>(StringComparer.OrdinalIgnoreCase);
-        private ConcurrentDictionary<string, ChannelUser> _Ops = new ConcurrentDictionary<string, ChannelUser>(StringComparer.OrdinalIgnoreCase);
-        private ConcurrentDictionary<string, ChannelUser> _Voices = new ConcurrentDictionary<string, ChannelUser>(StringComparer.OrdinalIgnoreCase);
-        private StringCollection _Bans      = new StringCollection();
-        private List<string>     _BanExcepts = new List<string>();
-        private List<string>     _InviteExcepts = new List<string>();
-        private string           _Topic     = String.Empty;
-        private int              _UserLimit;
-        private string           _Mode      = String.Empty;
-        private DateTime         _ActiveSyncStart;
-        private DateTime         _ActiveSyncStop;
-        private TimeSpan         _ActiveSyncTime;
-        private bool             _IsSycned;
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"> </param>
+        private DateTime _ActiveSyncStop;
+
         internal Channel(string name)
         {
-            _Name = name;
-            _ActiveSyncStart = DateTime.Now;
+            Name = name;
+            ActiveSyncStart = DateTime.Now;
         }
 
 #if LOG4NET
@@ -73,191 +50,32 @@ namespace Meebey.SmartIrc4net
         }
 #endif
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Name {
-            get {
-                return _Name;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Key {
-            get {
-                return _Key;
-            }
-            set {
-                _Key = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Dictionary<string, ChannelUser> Users {
-            get {
-                return _Users.ToDictionary(item => item.Key, item => item.Value);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal ConcurrentDictionary<string, ChannelUser> UnsafeUsers {
-            get {
-                return _Users;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Dictionary<string, ChannelUser> Ops {
-            get {
-                return _Ops.ToDictionary(item => item.Key, item => item.Value);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal ConcurrentDictionary<string, ChannelUser> UnsafeOps {
-            get {
-                return _Ops;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Dictionary<string, ChannelUser> Voices {
-            get {
-                return _Voices.ToDictionary(item => item.Key, item => item.Value);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal ConcurrentDictionary<string, ChannelUser> UnsafeVoices {
-            get {
-                return _Voices;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public StringCollection Bans {
-            get {
-                return _Bans;
-            }
-        }
-
-        public List<string> BanExceptions {
-            get {
-                return _BanExcepts;
-            }
-        }
-
-        public List<string> InviteExceptions {
-            get {
-                return _InviteExcepts;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Topic {
-            get {
-                return _Topic;
-            }
-            set {
-                _Topic = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public int UserLimit {
-            get {
-                return _UserLimit;
-            }
-            set {
-                _UserLimit = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Mode {
-            get {
-                return _Mode;
-            }
-            set {
-                _Mode = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public DateTime ActiveSyncStart {
-            get {
-                return _ActiveSyncStart;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public DateTime ActiveSyncStop {
-            get {
-                return _ActiveSyncStop;
-            }
-            set {
+        public string Name { get; }
+        public string Key { get; set; } = "";
+        public Dictionary<string, ChannelUser> Users => UnsafeUsers.ToDictionary(item => item.Key, item => item.Value);
+        internal ConcurrentDictionary<string, ChannelUser> UnsafeUsers { get; } = new ConcurrentDictionary<string, ChannelUser>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, ChannelUser> Ops => UnsafeOps.ToDictionary(item => item.Key, item => item.Value);
+        internal ConcurrentDictionary<string, ChannelUser> UnsafeOps { get; } = new ConcurrentDictionary<string, ChannelUser>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, ChannelUser> Voices => UnsafeVoices.ToDictionary(item => item.Key, item => item.Value);
+        internal ConcurrentDictionary<string, ChannelUser> UnsafeVoices { get; } = new ConcurrentDictionary<string, ChannelUser>(StringComparer.OrdinalIgnoreCase);
+        public List<string> Bans { get; } = new List<string>();
+        public List<string> BanExceptions { get; } = new List<string>();
+        public List<string> InviteExceptions { get; } = new List<string>();
+        public string Topic { get; set; } = "";
+        public int UserLimit { get; set; }
+        public string Mode { get; set; } = "";
+        public DateTime ActiveSyncStart { get; }
+        public DateTime ActiveSyncStop
+        {
+            get => _ActiveSyncStop;
+            set
+            {
                 _ActiveSyncStop = value;
-                _ActiveSyncTime = _ActiveSyncStop.Subtract(_ActiveSyncStart);
+                ActiveSyncTime = _ActiveSyncStop.Subtract(ActiveSyncStart);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public TimeSpan ActiveSyncTime {
-            get {
-                return _ActiveSyncTime;
-            }
-        }
-
-        public bool IsSycned {
-            get {
-                return _IsSycned;
-            }
-            set {
-                _IsSycned = value;
-            }
-        }
+        public TimeSpan ActiveSyncTime { get; private set; }
+        public bool IsSycned { get; set; }
     }
 }

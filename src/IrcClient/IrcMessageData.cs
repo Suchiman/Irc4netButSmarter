@@ -36,139 +36,73 @@ namespace Meebey.SmartIrc4net
     /// <threadsafety static="true" instance="true" />
     public class IrcMessageData
     {
-        private IrcClient   _Irc;
-        private string      _From;
-        private string      _Nick;
-        private string      _Ident;
-        private string      _Host;
-        private string      _Channel;
-        private string      _Message;
-        private string[]    _MessageArray;
-        private string      _RawMessage;
-        private string[]    _RawMessageArray;
-        private Dictionary<string, string> _Tags;
-        private ReceiveType _Type;
-        private ReplyCode   _ReplyCode;
-        
         /// <summary>
         /// Gets the IrcClient object the message originated from
         /// </summary>
-        public IrcClient Irc {
-            get {
-                return _Irc;
-            }
-        }
-        
+        public IrcClient Irc { get; }
+
         /// <summary>
         /// Gets the combined nickname, identity and hostname of the user that sent the message
         /// </summary>
         /// <example>
         /// nick!ident@host
         /// </example>
-        public string From {
-            get {
-                return _From;
-            }
-        }
-        
+        public string From { get; }
+
         /// <summary>
         /// Gets the nickname of the user that sent the message
         /// </summary>
-        public string Nick {
-            get {
-                return _Nick;
-            }
-        }
+        public string Nick { get; }
 
         /// <summary>
         /// Gets the identity (username) of the user that sent the message
         /// </summary>
-        public string Ident {
-            get {
-                return _Ident;
-            }
-        }
+        public string Ident { get; }
 
         /// <summary>
         /// Gets the hostname of the user that sent the message
         /// </summary>
-        public string Host {
-            get {
-                return _Host;
-            }
-        }
+        public string Host { get; }
 
         /// <summary>
         /// Gets the channel the message originated from
         /// </summary>
-        public string Channel {
-            get {
-                return _Channel;
-            }
-        }
-        
+        public string Channel { get; }
+
         /// <summary>
         /// Gets the message
         /// </summary>
-        public string Message {
-            get {
-                return _Message;
-            }
-        }
-        
+        public string Message { get; }
+
         /// <summary>
         /// Gets the message as an array of strings (splitted by space)
         /// </summary>
-        public string[] MessageArray {
-            get {
-                return _MessageArray;
-            }
-        }
-        
+        public string[] MessageArray { get; }
+
         /// <summary>
         /// Gets the raw message sent by the server
         /// </summary>
-        public string RawMessage {
-            get {
-                return _RawMessage;
-            }
-        }
-        
+        public string RawMessage { get; }
+
         /// <summary>
         /// Gets the raw message sent by the server as array of strings (splitted by space)
         /// </summary>
-        public string[] RawMessageArray {
-            get {
-                return _RawMessageArray;
-            }
-        }
+        public string[] RawMessageArray { get; }
 
         /// <summary>
         /// Gets the message tags sent by the server as a dictionary
         /// </summary>
-        public Dictionary<string, string> Tags {
-            get {
-                return _Tags;
-            }
-        }
+        public Dictionary<string, string> Tags { get; }
 
         /// <summary>
         /// Gets the message type
         /// </summary>
-        public ReceiveType Type {
-            get {
-                return _Type;
-            }
-        }
+        public ReceiveType Type { get; }
 
         /// <summary>
         /// Gets the message reply code
         /// </summary>
-        public ReplyCode ReplyCode {
-            get {
-                return _ReplyCode;
-            }
-        }
+        public ReplyCode ReplyCode { get; }
 
         /// <summary>
         /// Constructor to create an instance of IrcMessageData
@@ -183,26 +117,26 @@ namespace Meebey.SmartIrc4net
         /// <param name="rawmessage">raw message sent by the server</param>
         /// <param name="type">message type</param>
         /// <param name="replycode">message reply code</param>
-        /// <param name="rawTags">raw tags data sent by the server</param>
         /// <param name="tags">Dictionary of separated and unescaped tags</param>
         public IrcMessageData(IrcClient ircclient, string from, string nick, string ident, string host, string channel, string message, string rawmessage, ReceiveType type, ReplyCode replycode, Dictionary<string, string> tags)
         {
-            _Irc = ircclient;
-            _RawMessage = rawmessage;
-            _RawMessageArray = rawmessage.Split(new char[] {' '});
-            _Type = type;
-            _ReplyCode = replycode;
-            _From = from;
-            _Nick = nick;
-            _Ident = ident;
-            _Host = host;
-            _Channel = channel;
-            if (message != null) {
+            Irc = ircclient;
+            RawMessage = rawmessage;
+            RawMessageArray = rawmessage.Split(new char[] { ' ' });
+            Type = type;
+            ReplyCode = replycode;
+            From = from;
+            Nick = nick;
+            Ident = ident;
+            Host = host;
+            Channel = channel;
+            if (message != null)
+            {
                 // message is optional
-                _Message = message;
-                _MessageArray = message.Split(new char[] {' '});
+                Message = message;
+                MessageArray = message.Split(new char[] { ' ' });
             }
-            _Tags = tags;
+            Tags = tags;
         }
     }
 }

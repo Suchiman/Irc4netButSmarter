@@ -33,142 +33,73 @@ namespace Meebey.SmartIrc4net
 {
     public class WhoInfo
     {
-        private string   f_Channel;
-        private string   f_Ident;
-        private string   f_Host;
-        private string   f_Server;
-        private string   f_Nick;
-        private int      f_HopCount;
-        private string   f_Realname;
-        private bool     f_IsAway;
-        private bool     f_IsOwner;
-        private bool     f_IsChannelAdmin;
-        private bool     f_IsOp;
-        private bool     f_IsHalfop;
-        private bool     f_IsVoice;
-        private bool     f_IsIrcOp;
-        private bool     f_IsRegistered;
-        
-        public string Channel {
-            get {
-                return f_Channel;
-            }
-        }
+        public string Channel { get; private set; }
 
-        public string Ident {
-            get {
-                return f_Ident;
-            }
-        }
-        
-        public string Host {
-            get {
-                return f_Host;
-            }
-        }
-        
-        public string Server {
-            get {
-                return f_Server;
-            }
-        }
-        
-        public string Nick {
-            get {
-                return f_Nick;
-            }
-        }
-        
-        public int HopCount {
-            get {
-                return f_HopCount;
-            }
-        }
-        
-        public string Realname {
-            get {
-                return f_Realname;
-            }
-        }
+        public string Ident { get; private set; }
 
-        public bool IsAway {
-            get {
-                return f_IsAway;
-            }
-        }
+        public string Host { get; private set; }
 
-        public bool IsOwner {
-            get {
-                return f_IsOwner;
-            }
-        }
+        public string Server { get; private set; }
 
-        public bool IsChannelAdmin {
-            get {
-                return f_IsChannelAdmin;
-            }
-        }
+        public string Nick { get; private set; }
 
-        public bool IsOp {
-            get {
-                return f_IsOp;
-            }
-        }
+        public int HopCount { get; private set; }
 
-        public bool IsHalfop {
-            get {
-                return f_IsHalfop;
-            }
-        }
+        public string Realname { get; private set; }
 
-        public bool IsVoice {
-            get {
-                return f_IsVoice;
-            }
-        }
+        public bool IsAway { get; private set; }
 
-        public bool IsIrcOp {
-            get {
-                return f_IsIrcOp;
-            }
-        }
+        public bool IsOwner { get; private set; }
 
-        public bool IsRegistered {
-            get {
-                return f_IsRegistered;
-            }
-        }
-        
+        public bool IsChannelAdmin { get; private set; }
+
+        public bool IsOp { get; private set; }
+
+        public bool IsHalfop { get; private set; }
+
+        public bool IsVoice { get; private set; }
+
+        public bool IsIrcOp { get; private set; }
+
+        public bool IsRegistered { get; private set; }
+
         private WhoInfo()
         {
         }
-        
+
         public static WhoInfo Parse(IrcMessageData data)
         {
-            WhoInfo whoInfo = new WhoInfo();
-            // :fu-berlin.de 352 meebey_ * ~meebey e176002059.adsl.alicedsl.de fu-berlin.de meebey_ H :0 Mirco Bauer..
-            whoInfo.f_Channel  = data.RawMessageArray[3];
-            whoInfo.f_Ident    = data.RawMessageArray[4];
-            whoInfo.f_Host     = data.RawMessageArray[5];
-            whoInfo.f_Server   = data.RawMessageArray[6];
-            whoInfo.f_Nick     = data.RawMessageArray[7];
+            var whoInfo = new WhoInfo
+            {
+                // :fu-berlin.de 352 meebey_ * ~meebey e176002059.adsl.alicedsl.de fu-berlin.de meebey_ H :0 Mirco Bauer..
+                Channel = data.RawMessageArray[3],
+                Ident = data.RawMessageArray[4],
+                Host = data.RawMessageArray[5],
+                Server = data.RawMessageArray[6],
+                Nick = data.RawMessageArray[7]
+            };
 
             // HACK: realname field can be empty on bugged IRCds like InspIRCd-2.0
             // :topiary.voxanon.net 352 Mirco #anonplusradio CpGc igot.avhost Voxanon CpGc H
-            if (data.MessageArray == null || data.MessageArray.Length < 2) {
-                whoInfo.f_Realname = String.Empty;
-            } else {
-                int hopcount = 0;
-                var hopcountStr = data.MessageArray[0];
-                if (Int32.TryParse(hopcountStr, out hopcount)) {
-                    whoInfo.f_HopCount = hopcount;
-                } else {
+            if (data.MessageArray == null || data.MessageArray.Length < 2)
+            {
+                whoInfo.Realname = "";
+            }
+            else
+            {
+                string hopcountStr = data.MessageArray[0];
+                if (Int32.TryParse(hopcountStr, out int hopcount))
+                {
+                    whoInfo.HopCount = hopcount;
+                }
+                else
+                {
 #if LOG4NET
                     Logger.MessageParser.Warn("Parse(): couldn't parse hopcount (as int): '" + hopcountStr + "'");
 #endif
                 }
                 // skip hop count
-                whoInfo.f_Realname = String.Join(" ", data.MessageArray, 1, data.MessageArray.Length - 1);
+                whoInfo.Realname = String.Join(" ", data.MessageArray, 1, data.MessageArray.Length - 1);
             }
 
             string usermode = data.RawMessageArray[8];
@@ -181,47 +112,49 @@ namespace Meebey.SmartIrc4net
             bool away = false;
             bool registered = false;
             int usermodelength = usermode.Length;
-            for (int i = 0; i < usermodelength; i++) {
-                switch (usermode[i]) {
+            for (int i = 0; i < usermodelength; i++)
+            {
+                switch (usermode[i])
+                {
                     case 'H':
                         away = false;
-                    break;
+                        break;
                     case 'G':
                         away = true;
-                    break;
+                        break;
                     case '~':
                         owner = true;
-                    break;
+                        break;
                     case '&':
                         chanadmin = true;
-                    break;
+                        break;
                     case '@':
                         op = true;
-                    break;
+                        break;
                     case '%':
                         halfop = true;
-                    break;
+                        break;
                     case '+':
                         voice = true;
-                    break;
+                        break;
                     case '*':
                         ircop = true;
-                    break;
+                        break;
                     case 'r':
                         registered = true;
-                    break;
+                        break;
                 }
             }
-            whoInfo.f_IsAway = away;
-            whoInfo.f_IsOwner = owner;
-            whoInfo.f_IsChannelAdmin = chanadmin;
-            whoInfo.f_IsOp = op;
-            whoInfo.f_IsHalfop = halfop;
-            whoInfo.f_IsVoice = voice;
-            whoInfo.f_IsIrcOp = ircop;
+            whoInfo.IsAway = away;
+            whoInfo.IsOwner = owner;
+            whoInfo.IsChannelAdmin = chanadmin;
+            whoInfo.IsOp = op;
+            whoInfo.IsHalfop = halfop;
+            whoInfo.IsVoice = voice;
+            whoInfo.IsIrcOp = ircop;
 
-            whoInfo.f_IsRegistered = registered;
-            
+            whoInfo.IsRegistered = registered;
+
             return whoInfo;
         }
     }

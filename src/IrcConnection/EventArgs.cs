@@ -30,23 +30,11 @@ using System;
 
 namespace Meebey.SmartIrc4net
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class ReadLineEventArgs : EventArgs
     {
-        private string _Line;
-        
-        public string Line {
-            get {
-                return _Line;
-            }
-        }
+        public string Line { get; }
 
-        internal ReadLineEventArgs(string line)
-        {
-            _Line = line;
-        }
+        internal ReadLineEventArgs(string line) => Line = line;
     }
 
     /// <summary>
@@ -54,18 +42,9 @@ namespace Meebey.SmartIrc4net
     /// </summary>
     public class WriteLineEventArgs : EventArgs
     {
-        private string _Line;
-        
-        public string Line {
-            get {
-                return _Line;
-            }
-        }
+        public string Line { get; }
 
-        internal WriteLineEventArgs(string line)
-        {
-            _Line = line;
-        }
+        internal WriteLineEventArgs(string line) => Line = line;
     }
 
     /// <summary>
@@ -73,33 +52,15 @@ namespace Meebey.SmartIrc4net
     /// </summary>
     public class AutoConnectErrorEventArgs : EventArgs
     {
-        private Exception           _Exception;
-        private string              _Address;
-        private int                 _Port;
+        public Exception Exception { get; }
+        public string Address { get; }
+        public int Port { get; }
 
-        public Exception Exception {
-            get {
-                return _Exception;
-            }
-        }
-
-        public string Address {
-            get  {
-                return _Address;
-            }
-        }
-        
-        public int Port {
-            get {
-                return _Port;
-            }
-        }
-        
         internal AutoConnectErrorEventArgs(string address, int port, Exception ex)
         {
-            _Address   = address;
-            _Port      = port;
-            _Exception = ex;
+            Address = address;
+            Port = port;
+            Exception = ex;
         }
     }
 }
