@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Copyright>2018 (C) Robin Sue, 2003-2015 (C) Mirco Bauer &lt;meebey@meebey.net&gt; and other contributors</Copyright>
+    <Description>IRC library for CLI</Description>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+</Project>
