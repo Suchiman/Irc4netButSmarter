@@ -8,9 +8,9 @@
  * SmartIrc4net - the IRC library for .NET/C# <http://smartirc4net.sf.net>
  *
  * Copyright (c) 2003-2005 Mirco Bauer <meebey@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -34,7 +34,8 @@ namespace Meebey.SmartIrc4net
     [Serializable]
     public class SmartIrc4netException : ApplicationException
     {
-        public SmartIrc4netException()         {
+        public SmartIrc4netException()
+        {
         }
 
         public SmartIrc4netException(string message) : base(message)
@@ -53,7 +54,8 @@ namespace Meebey.SmartIrc4net
     [Serializable]
     public class ConnectionException : SmartIrc4netException
     {
-        public ConnectionException()         {
+        public ConnectionException()
+        {
         }
 
         public ConnectionException(string message) : base(message)
@@ -72,7 +74,8 @@ namespace Meebey.SmartIrc4net
     [Serializable]
     public class CouldNotConnectException : ConnectionException
     {
-        public CouldNotConnectException()         {
+        public CouldNotConnectException()
+        {
         }
 
         public CouldNotConnectException(string message) : base(message)
@@ -91,7 +94,8 @@ namespace Meebey.SmartIrc4net
     [Serializable]
     public class NotConnectedException : ConnectionException
     {
-        public NotConnectedException()         {
+        public NotConnectedException()
+        {
         }
 
         public NotConnectedException(string message) : base(message)
@@ -110,7 +114,8 @@ namespace Meebey.SmartIrc4net
     [Serializable]
     public class AlreadyConnectedException : ConnectionException
     {
-        public AlreadyConnectedException()         {
+        public AlreadyConnectedException()
+        {
         }
 
         public AlreadyConnectedException(string message) : base(message)

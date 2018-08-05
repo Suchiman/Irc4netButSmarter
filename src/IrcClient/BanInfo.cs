@@ -8,9 +8,9 @@
  * SmartIrc4net - the IRC library for .NET/C# <http://smartirc4net.sf.net>
  *
  * Copyright (c) 2008 Mirco Bauer <meebey@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -32,7 +32,7 @@ namespace Meebey.SmartIrc4net
 {
     public class BanInfo
     {
-        public string Channel { get;  }
+        public string Channel { get; }
         public string Mask { get; }
 
         private BanInfo(string channel, string mask)

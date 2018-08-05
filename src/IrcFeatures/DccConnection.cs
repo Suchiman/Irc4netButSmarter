@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2008-2009 Thomas Bruderer <apophis@apophis.ch> <http://www.apophis.ch>
  * Copyright (c) 2015 Katy Coe <djkaty@start.no> <http://www.djkaty.com>
- * 
+ *
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  *
  * This library is free software; you can redistribute it and/or

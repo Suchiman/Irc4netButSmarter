@@ -193,7 +193,7 @@ namespace Meebey.SmartIrc4net
                     return;
                 }
 #if LOG4NET
-                
+
                 if (value) {
                     Logger.ChannelSyncing.Info("SupportNonRfc enabled");
                 } else {
@@ -223,7 +223,7 @@ namespace Meebey.SmartIrc4net
         /// Gets the username for the server.
         /// </summary>
         /// <remarks>
-        /// System username is set by default 
+        /// System username is set by default
         /// </remarks>
         public string Username { get; private set; } = "";
 
@@ -332,15 +332,15 @@ namespace Meebey.SmartIrc4net
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nicklist">The users list of 'nick' names which may NOT contain spaces</param>
         /// <param name="realname">The users 'real' name which may contain space characters</param>
-        /// <param name="usermode">A numeric mode parameter.  
+        /// <param name="usermode">A numeric mode parameter.
         ///   <remark>
-        ///     Set to 0 to recieve wallops and be invisible. 
+        ///     Set to 0 to recieve wallops and be invisible.
         ///     Set to 4 to be invisible and not receive wallops.
         ///   </remark>
         /// </param>
-        /// <param name="username">The user's machine logon name</param>        
+        /// <param name="username">The user's machine logon name</param>
         /// <param name="password">The optional password can and MUST be set before any attempt to register
-        ///  the connection is made.</param>        
+        ///  the connection is made.</param>
         public void Login(string[] nicklist, string realname, int usermode, string username, string password)
         {
 #if LOG4NET
@@ -377,10 +377,10 @@ namespace Meebey.SmartIrc4net
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nicklist">The users list of 'nick' names which may NOT contain spaces</param>
         /// <param name="realname">The users 'real' name which may contain space characters</param>
-        /// <param name="usermode">A numeric mode parameter.  
-        /// Set to 0 to recieve wallops and be invisible. 
-        /// Set to 4 to be invisible and not receive wallops.</param>        
-        /// <param name="username">The user's machine logon name</param>        
+        /// <param name="usermode">A numeric mode parameter.
+        /// Set to 0 to recieve wallops and be invisible.
+        /// Set to 4 to be invisible and not receive wallops.</param>
+        /// <param name="username">The user's machine logon name</param>
         public void Login(string[] nicklist, string realname, int usermode, string username) => Login(nicklist, realname, usermode, username, "");
 
         /// <summary>
@@ -389,9 +389,9 @@ namespace Meebey.SmartIrc4net
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nicklist">The users list of 'nick' names which may NOT contain spaces</param>
         /// <param name="realname">The users 'real' name which may contain space characters</param>
-        /// <param name="usermode">A numeric mode parameter.  
-        /// Set to 0 to recieve wallops and be invisible. 
-        /// Set to 4 to be invisible and not receive wallops.</param>        
+        /// <param name="usermode">A numeric mode parameter.
+        /// Set to 0 to recieve wallops and be invisible.
+        /// Set to 4 to be invisible and not receive wallops.</param>
         public void Login(string[] nicklist, string realname, int usermode) => Login(nicklist, realname, usermode, "", "");
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace Meebey.SmartIrc4net
         /// </summary>
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nicklist">The users list of 'nick' names which may NOT contain spaces</param>
-        /// <param name="realname">The users 'real' name which may contain space characters</param> 
+        /// <param name="realname">The users 'real' name which may contain space characters</param>
         public void Login(string[] nicklist, string realname) => Login(nicklist, realname, 0, "", "");
 
         /// <summary>
@@ -408,12 +408,12 @@ namespace Meebey.SmartIrc4net
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nick">The users 'nick' name which may NOT contain spaces</param>
         /// <param name="realname">The users 'real' name which may contain space characters</param>
-        /// <param name="usermode">A numeric mode parameter.  
-        /// Set to 0 to recieve wallops and be invisible. 
-        /// Set to 4 to be invisible and not receive wallops.</param>        
-        /// <param name="username">The user's machine logon name</param>        
+        /// <param name="usermode">A numeric mode parameter.
+        /// Set to 0 to recieve wallops and be invisible.
+        /// Set to 4 to be invisible and not receive wallops.</param>
+        /// <param name="username">The user's machine logon name</param>
         /// <param name="password">The optional password can and MUST be set before any attempt to register
-        ///  the connection is made.</param>   
+        ///  the connection is made.</param>
         public void Login(string nick, string realname, int usermode, string username, string password) => Login(new string[] { nick, nick + "_", nick + "__" }, realname, usermode, username, password);
 
         /// <summary>
@@ -422,10 +422,10 @@ namespace Meebey.SmartIrc4net
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nick">The users 'nick' name which may NOT contain spaces</param>
         /// <param name="realname">The users 'real' name which may contain space characters</param>
-        /// <param name="usermode">A numeric mode parameter.  
-        /// Set to 0 to recieve wallops and be invisible. 
-        /// Set to 4 to be invisible and not receive wallops.</param>        
-        /// <param name="username">The user's machine logon name</param>        
+        /// <param name="usermode">A numeric mode parameter.
+        /// Set to 0 to recieve wallops and be invisible.
+        /// Set to 4 to be invisible and not receive wallops.</param>
+        /// <param name="username">The user's machine logon name</param>
         public void Login(string nick, string realname, int usermode, string username) => Login(new string[] { nick, nick + "_", nick + "__" }, realname, usermode, username, "");
 
         /// <summary>
@@ -434,9 +434,9 @@ namespace Meebey.SmartIrc4net
         /// <remark>Login is used at the beginning of connection to specify the username, hostname and realname of a new user.</remark>
         /// <param name="nick">The users 'nick' name which may NOT contain spaces</param>
         /// <param name="realname">The users 'real' name which may contain space characters</param>
-        /// <param name="usermode">A numeric mode parameter.  
-        /// Set to 0 to recieve wallops and be invisible. 
-        /// Set to 4 to be invisible and not receive wallops.</param>        
+        /// <param name="usermode">A numeric mode parameter.
+        /// Set to 0 to recieve wallops and be invisible.
+        /// Set to 4 to be invisible and not receive wallops.</param>
         public void Login(string nick, string realname, int usermode) => Login(new string[] { nick, nick + "_", nick + "__" }, realname, usermode, "", "");
 
         /// <summary>
@@ -521,7 +521,7 @@ namespace Meebey.SmartIrc4net
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="channelname">The name of the channel you wish to query</param>
         /// <returns>Channel object of requested channel</returns>
@@ -1059,7 +1059,7 @@ namespace Meebey.SmartIrc4net
             catch (NotConnectedException)
             {
                 // HACK: this is hacky, we don't know if the Reconnect was actually successful
-                // means sending IRC commands without a connection throws NotConnectedExceptions 
+                // means sending IRC commands without a connection throws NotConnectedExceptions
             }
         }
 
@@ -2533,7 +2533,7 @@ namespace Meebey.SmartIrc4net
 
                     // update his nickname
                     ircuser.Nick = newnickname;
-                    // remove the old entry 
+                    // remove the old entry
                     // remove first to avoid duplication, Foo -> foo
                     _IrcUsers.Remove(oldnickname);
                     // add him as new entry and new nickname as key
@@ -3118,7 +3118,7 @@ namespace Meebey.SmartIrc4net
             _InviteExceptListReceivedEvent?.Set();
         }
 
-        // MODE +b might return ERR_NOCHANMODES for mode-less channels (like +chan) 
+        // MODE +b might return ERR_NOCHANMODES for mode-less channels (like +chan)
         private void _Event_ERR_NOCHANMODES(IrcMessageData ircdata)
         {
             string channelname = ircdata.RawMessageArray[3];

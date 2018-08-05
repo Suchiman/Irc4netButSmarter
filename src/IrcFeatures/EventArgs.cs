@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2008-2009 Thomas Bruderer <apophis@apophis.ch> <http://www.apophis.ch>
  * Copyright (c) 2015 Katy Coe <djkaty@start.no> <http://www.djkaty.com>
- * 
+ *
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  *
  * This library is free software; you can redistribute it and/or
@@ -33,11 +33,6 @@ namespace Meebey.SmartIrc4net
     {
         public DccConnection Dcc { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dccClient"></param>
-        /// <param name="stream">If there are multiple streams on a DCC (a channel DCC) this identifies the stream</param>
         internal DccEventArgs(DccConnection dcc) => Dcc = dcc;
     }
 
@@ -51,9 +46,8 @@ namespace Meebey.SmartIrc4net
 
         internal DccChatEventArgs(DccConnection dcc, string messageLine) : base(dcc)
         {
-            char[] whiteSpace = { ' ' };
             Message = messageLine;
-            MessageArray = messageLine.Split(new char[] { ' ' });
+            MessageArray = messageLine.Split(' ');
         }
     }
 

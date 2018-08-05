@@ -9,9 +9,9 @@
  *
  * Copyright (c) 2003-2009 Mirco Bauer <meebey@meebey.net> <http://www.meebey.net>
  * Copyright (c) 2008-2009 Thomas Bruderer <apophis@apophis.ch>
- * 
+ *
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -782,9 +782,6 @@ namespace Meebey.SmartIrc4net
 
             protected abstract void Worker();
 
-            /// <summary>
-            /// 
-            /// </summary>
             public void Start()
             {
                 PrepareStart();

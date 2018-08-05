@@ -3,7 +3,7 @@
  * SmartIrc4net - the IRC library for .NET/C# <http://smartirc4net.sf.net>
  *
  * Copyright (c) 2008-2009 Thomas Bruderer <apophis@apophis.ch> <http://www.apophis.ch>
- * 
+ *
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  *
  * This library is free software; you can redistribute it and/or
@@ -46,7 +46,8 @@ namespace Meebey.SmartIrc4net
         /// <param name="externalIpAdress">Our externally reachable IP Adress (can be anything if passive)</param>
         /// <param name="passive">if you have no reachable ports!</param>
         /// <param name="priority">Non DCC Message Priority</param>
-        internal DccChat(IrcFeatures irc, string user, IPAddress externalIpAdress, bool passive, Priority priority)         {
+        internal DccChat(IrcFeatures irc, string user, IPAddress externalIpAdress, bool passive, Priority priority)
+        {
             Irc = irc;
             ExternalIPAdress = externalIpAdress;
             User = user;
@@ -72,7 +73,8 @@ namespace Meebey.SmartIrc4net
         /// <param name="irc">IrcFeature Class</param>
         /// <param name="externalIpAdress">Our externally reachable IP Adress</param>
         /// <param name="e">The Ctcp Event which initiated this constructor</param>
-        internal DccChat(IrcFeatures irc, IPAddress externalIpAdress, CtcpEventArgs e)         {
+        internal DccChat(IrcFeatures irc, IPAddress externalIpAdress, CtcpEventArgs e)
+        {
             Irc = irc;
             ExternalIPAdress = externalIpAdress;
             User = e.Data.Nick;
