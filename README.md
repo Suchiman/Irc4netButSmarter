@@ -1,4 +1,5 @@
 # Irc4netButSmarter
+[![NuGet version (Irc4netButSmarter)](https://img.shields.io/nuget/v/Irc4netButSmarter.svg?style=flat-square)](https://www.nuget.org/packages/Irc4netButSmarter/)
 
 ## What is this?
 Irc4netButSmarter is a modernized, .NET Core compatible, fork of SmartIrc4net
